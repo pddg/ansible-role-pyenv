@@ -7,7 +7,7 @@
   run_once: yes
 
 - block:
-  - name: Install python interpreters
+  - name: "{{ item }}: Install python interpreters"
     shell: "pyenv install {{ item }}"
     args:
       creates: '{{ pyenv_install_dir }}/versions/{{ item }}'
@@ -19,10 +19,9 @@
       LDFLAGS: '-L{{ openssl_prefix.stdout }}/lib'
     notify:
       - Pyenv rehash
-    loop: "{{ pyenv_install_versions }}"
 
   rescue:
-    - name: Delete failed version directory
+    - name: "{{ item }}: Delete failed version directory"
       file:
         state: absent
         path: '{{ pyenv_install_dir }}/versions/{{ item }}'

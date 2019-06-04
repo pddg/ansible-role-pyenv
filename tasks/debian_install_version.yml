@@ -1,6 +1,6 @@
 ---
 - block:
-  - name: Install python interpreters
+  - name: "{{ item }}: Install"
     shell: "pyenv install {{ item }}"
     args:
       creates: '{{ pyenv_install_dir }}/versions/{{ item }}'
@@ -9,10 +9,9 @@
       PYENV_ROOT: "{{ pyenv_install_dir }}"
     notify:
       - Pyenv rehash
-    loop: "{{ pyenv_install_versions }}"
 
   rescue:
-    - name: Delete failed version directory
+    - name: "{{ item }}: Delete failed version directory"
       file:
         state: absent
         path: '{{ pyenv_install_dir }}/versions/{{ item }}'

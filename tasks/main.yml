@@ -22,6 +22,7 @@
   loop: "{{ pyenv_plugins }}"
 
 - include_tasks: "{{ ansible_os_family | lower }}_install_version.yml"
+  loop: "{{ pyenv_install_versions }}"
 
 - include_tasks: "create_env.yml"
   with_items: "{{ pyenv_virtualenvs }}"
